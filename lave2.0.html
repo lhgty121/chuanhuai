@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- 头部元信息保持不变 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>特别邀请</title>
+    <style>
+        /* 原有CSS样式保持不变 */
+    </style>
+</head>
+<body>
+    <!-- 页面结构保持不变 -->
+    <div class="container">
+        <h1>🌌 你愿意与我共度星辰吗？ 🌠</h1>
+        <div class="buttons">
+            <button id="yesBtn" onclick="showMessage()">我愿意</button>
+            <button id="noBtn" onclick="handleNo()">再想想</button>
+        </div>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        // ============= 新增震动函数 =============
+        function vibrate(pattern) {
+            if (navigator.vibrate) {
+                navigator.vibrate(pattern);
+            }
+        }
+
+        const noMessages = [
+            "真的不再考虑？",
+            "星空需要你我🌟",
+            "心跳漏了一拍💔",
+            "宇宙在叹息😢",
+            "流星为你划过🌠",
+            "银河系缺了一角",
+            "这是最后的请求！",
+            "黑洞要吞噬我了🕳️",
+            "超新星爆发啦💥"
+        ];
+        
+        let clickCount = 0;
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        let currentScale = 1;
+
+        function showMessage() {
+            // ===== 点击"我愿意"时触发长震动 =====
+            vibrate([100, 50, 100]); // 震动模式：震动100ms→暂停50ms→震动100ms
+            
+            document.getElementById('message').innerHTML = `
+                <p>🎇 我们的宇宙开始闪耀！<br>
+                光年之外的爱意正在传送...<br>
+                📡 接收到永恒频率：521Hz ❤️</p>
+            `;
+            document.getElementById('message').style.display = 'block';
+            document.querySelector('.buttons').style.display = 'none';
+        }
+
+        function handleNo() {
+            // ===== 每次点击"再想想"触发短震动 =====
+            vibrate(50); // 单次震动50毫秒
+            
+            clickCount++;
+            
+            // 改变拒绝按钮文案
+            noBtn.textContent = noMessages[clickCount % noMessages.length];
+            
+            // 放大同意按钮
+            currentScale += 0.15;
+            yesBtn.style.transform = `scale(${currentScale})`;
+            
+            // 添加心跳动画
+            yesBtn.style.animation = 'heartbeat 0.5s ease';
+            setTimeout(() => {
+                yesBtn.style.animation = '';
+            }, 500);
+
+            // 随机移动拒绝按钮
+            const maxOffset = Math.min(100, window.innerWidth/4);
+            const offsetX = (Math.random() * maxOffset * 2) - maxOffset;
+            const offsetY = (Math.random() * maxOffset * 2) - maxOffset;
+            noBtn.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+        }
+
+        // 移动端触摸事件处理（保持不变）
+        noBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            handleNo();
+        }, { passive: false });
+    </script>
+</body>
+</html>
