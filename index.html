@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>特别邀请</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            font-family: 'Microsoft YaHei', sans-serif;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2em;
+            font-size: 2.2rem;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        button {
+            border: none;
+            padding: 1em 2em;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        #yesBtn {
+            background-color: #4CAF50;
+            color: white;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        #noBtn {
+            background-color: #ff4444;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        #message {
+            margin-top: 2em;
+            font-size: 1.5rem;
+            color: #ffffff;
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            button {
+                width: 100%;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌸 你可以成为我的恋人吗？ 🌸</h1>
+        <div class="buttons">
+            <button id="yesBtn" onclick="showMessage()">当然可以！</button>
+            <button id="noBtn" onclick="handleNo()">不可以</button>
+        </div>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        const noMessages = [
+            "再考虑一下？",
+            "真的不行吗？",
+            "给个机会嘛～",
+            "你确定要拒绝吗？",
+            "最后再想想？",
+            "没有你我会枯萎的🥀",
+            "宇宙因你而闪耀✨",
+            "我的心碎成二维码了💔",
+            "这是最终请求！"
+        ];
+        
+        let clickCount = 0;
+        const noBtn = document.getElementById('noBtn');
+        const baseSize = parseFloat(getComputedStyle(noBtn).fontSize);
+        const baseWidth = noBtn.offsetWidth;
+        const baseHeight = noBtn.offsetHeight;
+
+        function showMessage() {
+            document.getElementById('message').innerHTML = `
+                <p>🎉 感谢你让我的世界充满星光！ 🌟<br>
+                我们的故事将从此刻开始书写... ✍️<br>
+                请查收这份永恒的承诺 → ❤️</p>
+            `;
+            document.getElementById('message').style.display = 'block';
+            document.querySelector('.buttons').style.display = 'none';
+        }
+
+        function handleNo() {
+            clickCount++;
+            
+            // 动态改变按钮文字
+            noBtn.textContent = noMessages[clickCount % noMessages.length];
+            
+            // 按钮逐渐放大
+            const scale = 1 + clickCount * 0.2;
+            noBtn.style.fontSize = `${baseSize * (1 + clickCount * 0.15)}px`;
+            noBtn.style.width = `${baseWidth * (1 + clickCount * 0.15)}px`;
+            noBtn.style.height = `${baseHeight * (1 + clickCount * 0.15)}px`;
+            
+            // 随机移动按钮位置（移动端优化版）
+            const maxOffset = Math.min(100, window.innerWidth/4);
+            const offsetX = (Math.random() * maxOffset * 2) - maxOffset;
+            const offsetY = (Math.random() * maxOffset * 2) - maxOffset;
+            noBtn.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+            
+            // 每3次点击重置位置
+            if (clickCount % 3 === 0) {
+                setTimeout(() => {
+                    noBtn.style.transform = 'translate(0, 0)';
+                }, 300);
+            }
+        }
+
+        // 移动端触摸事件处理
+        noBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            handleNo();
+        }, { passive: false });
+    </script>
+</body>
+</html>
